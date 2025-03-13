@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATREKTA MBWENI ZANZIBAR (MMBZ) - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="signup-container">
+        <div class="logo">MATREKTA MBWENI ZANZIBAR (MMBZ)</div>
+        <p>Enter First Name (Jina la Kwanza)</p>
+        <input type="text" id="firstname" placeholder="Enter First Name (Jina la Kwanza)">
+        <input type="text" id="lastname" placeholder="Enter Last Name (Jina la Mwisho)">
+        <input type="email" id="signup-email" placeholder="Enter Email (Barua pepe)">
+        <input type="text" id="username" placeholder="Enter Username (Jina la Mtumiaji)">
+        <input type="password" id="password" placeholder="Enter Password (Nenosiri)">
+        <button onclick="signup()">Create Account</button>
+        <p id="signup-message" style="color: green;"></p>
+    </div>
+
+    <div class="container" id="login-container" style="display: none;">
+        <div class="logo">MATREKTA MBWENI ZANZIBAR (MMBZ)</div>
+        <input type="text" id="login-username" placeholder="Enter Username (Jina la Mtumiaji)">
+        <input type="password" id="login-password" placeholder="Enter Password (Nenosiri)">
+        <button onclick="login()">Login</button>
+        <p id="message" style="color: red;"></p>
+    </div>
+
+    <div class="container" id="registration-container" style="display: none;">
+        <div class="logo">Registration Form</div>
+        <p>Please fill in the following information accurately.</p>
+        <p>Tafadhali jaza taarifa zako kwa usahihi.</p>
+        <p>Jina Lako Kamili</p>
+        <input type="text" id="fullname" placeholder="Full Name ">
+        <input type="date" id="dob" placeholder="Date of Birth (Tarehe ya Kuzaliwa)">
+        <input type="text" id="zanzibarid" placeholder="Zanzibar ID (Kitambulisho cha Zanzibar)">
+        <input type="date" id="service-date" placeholder="Date of Service (Tarehe ya Huduma)">
+        <input type="date" id="current-date" placeholder="Current Date (Tarehe ya Sasa)">
+        <input type="email" id="email" placeholder="Email Address (Barua Pepe)">
+        <input type="text" id="address" placeholder="Address (Anwani)">
+        <input type="number" id="land-size" placeholder="Land Size in Hectares (Ukubwa wa Ardhi )">
+        <button onclick="register()">Submit</button>
+        <p id="receipt"></p>
+    </div>
+
+    <script>
+        let users = {};
+        
+        function signup() {
+            var firstname = document.getElementById("firstname").value;
+            var lastname = document.getElementById("lastname").value;
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var email = document.getElementById("signup-email").value;
+            
+            if (username && password) {
+                users[username] = password;
+                alert("Account Created! Username: " + username);
+                document.getElementById("signup-container").style.display = "none";
+                document.getElementById("login-container").style.display = "block";
+            } else {
+                alert("Please enter a valid username and password.");
+            }
+        }
+
+        function login() {
+            var username = document.getElementById("login-username").value;
+            var password = document.getElementById("login-password").value;
+            
+            if (users[username] && users[username] === password) {
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("registration-container").style.display = "block";
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+
+        function register() {
+            var fullname = document.getElementById("fullname").value;
+            var dob = document.getElementById("dob").value;
+            var zanzibarid = document.getElementById("zanzibarid").value;
+            var serviceDate = document.getElementById("service-date").value;
+            var currentDate = document.getElementById("current-date").value;
+            var email = document.getElementById("email").value;
+            var address = document.getElementById("address").value;
+            var landSize = document.getElementById("land-size").value;
+            
+            var costPerHectare = 1500;
+            var totalCost = landSize * costPerHectare;
+            var controlNumber = Math.floor(1000000000 + Math.random() * 9000000000);
+            var receiptNumber = "MBZ-" + Math.floor(Math.random() * 100000);
+            
+            if (fullname && dob && zanzibarid && serviceDate && currentDate && email && address && landSize) {
+                var receiptContent = "Receipt Number: " + receiptNumber + "\n" +
+                                     "Control Number: " + controlNumber + "\n" +
+                                     "Full Name: " + fullname + "\n" +
+                                     "Date of Birth: " + dob + "\n" +
+                                     "Zanzibar ID: " + zanzibarid + "\n" +
+                                     "Service Date: " + serviceDate + "\n" +
+                                     "Current Date: " + currentDate + "\n" +
+                                     "Email: " + email + "\n" +
+                                     "Address: " + address + "\n" +
+                                     "Land Size: " + landSize + " Hectares\n" +
+                                     "Total Payment: " + totalCost + " TZS";
+                
+                alert("Registration Successful! " + receiptContent);
+                document.getElementById("receipt").innerText = receiptContent;
+                window.print();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+</body>
+</html>
